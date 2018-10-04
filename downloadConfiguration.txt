@@ -1,5 +1,4 @@
 objectTypeFilePath=/Object types CSV.csv
-fileSuffixFilePath=/File Suffixes.txt
 outputFileLocation=/CORNISH FITS ALL
 fileSourceURLPrefix=http://cornish.leeds.ac.uk/public/data_src/
 downloadPartialObjects=yes
