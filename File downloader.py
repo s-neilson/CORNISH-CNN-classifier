@@ -4,7 +4,34 @@ import requests
 from joblib import Parallel
 from joblib import delayed
 
-from loadConfiguration import loadConfiguration
+from loadConfiguration import Configuration
+
+
+
+
+
+configuration=Configuration(os.getcwd()+"/downloadConfiguration.txt","=")
+
+objectTypeFilePath=os.getcwd()+configuration.getConfigurationValue("objectTypeFilePath","raw")
+outputFileLocation=os.getcwd()+configuration.getConfigurationValue("outputFileLocation","raw")
+fileSourceURLPrefix=configuration.getConfigurationValue("fileSourceURLPrefix","raw")
+objectFileSuffixes=configuration.getConfigurationValue("downloadFileSuffix","raw")
+downloadPartialObjects=configuration.getConfigurationValue("downloadPartialObjects","bool")
+
+    
+objectTypes=Configuration(objectTypeFilePath,",")        
+objects=[] #Contains pairs of object names and the corresponding paths that their files will be located at.
+
+for currentName,currentObjectType in objectTypes.getAllConfigurations(): 
+    currentObjectFolderPath=outputFileLocation+"/"+currentObjectType+"/"+currentName
+    objects.append((currentName,currentObjectFolderPath))
+     
+    
+print("There are "+str(len(objects))+" objects in total, each with "+str(len(objectFileSuffixes))+" associated files.")
+print("Partial download of objects "+("enabled" if(downloadPartialObjects) else "disabled"))
+
+
+
 
 
 def downloadOkStatusCode(response):
@@ -56,33 +83,6 @@ def downloadFiles(fileList,requestSession,partialDownloadAllowed):
     return downloadedFileResponses   
 
 
-
-
-configuration=loadConfiguration(os.getcwd()+"/downloadConfiguration.txt","=")
-
-objectTypeFilePath=os.getcwd()+configuration["objectTypeFilePath"]
-fileSuffixFilePath=os.getcwd()+configuration["fileSuffixFilePath"]
-outputFileLocation=os.getcwd()+configuration["outputFileLocation"]
-fileSourceURLPrefix=configuration["fileSourceURLPrefix"]
-objectFileSuffixes=configuration["downloadFileSuffix"]
-
-if(configuration["downloadPartialObjects"]=="yes"):
-    downloadPartialObjects=True
-else:
-    downloadPartialObjects=False
-    
-
-    
-objectDictionary=loadConfiguration(objectTypeFilePath,",")        
-objects=[] #Contains pairs of object names and the corresponding paths that their files will be located at.
-
-for currentName,currentObjectType in objectDictionary.items(): 
-    currentObjectFolderPath=outputFileLocation+"/"+currentObjectType+"/"+currentName
-    objects.append((currentName,currentObjectFolderPath))
-     
-    
-print("There are "+str(len(objects))+" objects in total, each with "+str(len(objectFileSuffixes))+" associated files.")
-print("Partial download of objects "+("enabled" if(downloadPartialObjects) else "disabled"))
 
 
 
