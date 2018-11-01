@@ -1,5 +1,6 @@
 from astropy.io import fits
 from astropy import wcs
+from astropy.visualization import MinMaxInterval
 import numpy
 import keras_preprocessing
 from matplotlib import pyplot as plt
@@ -65,7 +66,11 @@ class FileImagedObject(ImagedObject):
             if(not self.__imageFromEdgeOfSurvey(newImageData,rejectionThresholdArea)):
                 newImageData=fitsFileFunctions.imageMatchFovAndSize(newImageData,newWCS,imageSize,imageFov)
                 self.nonBlankImageCount+=1
-                self.imageData[:,:,imageDataIndex]=newImageData #The image has been successfully loaded.
+                
+                normalizerInterval=MinMaxInterval()
+                normalizedNewImageData=normalizerInterval(newImageData)#The pixel values in the curent image are normalized.
+
+                self.imageData[:,:,imageDataIndex]=normalizedNewImageData #The image has been successfully loaded.
      
     #Uses a modified version of the flood fill algorithm (used for changing the colour of areas in art software) in order to detect large regions that have the same pixel value that originate
     # from the edge; regions that may indicate that the image comes from the edge of an astronomical survey, meaning it should be rejected.
