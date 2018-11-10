@@ -1,0 +1,21 @@
+objectTypeFilePath=/Object types CSV.csv
+outputFileLocation=/CORNISH FITS ALL
+fileSourceURLPrefix=http://cornish.leeds.ac.uk/public/data_src/
+downloadPartialObjects=yes
+
+downloadFileSuffix=_CORNISH_5GHz.fits
+downloadFileSuffix=_MAGPIS_6cm.fits
+downloadFileSuffix=_MAGPIS_20cm.fits
+downloadFileSuffix=_BOLOCAM.fits
+downloadFileSuffix=_UKIDSS_J.fits
+downloadFileSuffix=_UKIDSS_H.fits
+downloadFileSuffix=_UKIDSS_K.fits
+downloadFileSuffix=_I1.fits
+downloadFileSuffix=_I2.fits
+downloadFileSuffix=_I3.fits
+downloadFileSuffix=_I4.fits
+downloadFileSuffix=_W3.4.fits
+downloadFileSuffix=_W4.6.fits
+downloadFileSuffix=_W12.fits
+downloadFileSuffix=_W22.fits
+downloadFileSuffix=_MIPS24_maic.fits
