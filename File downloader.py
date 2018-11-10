@@ -56,7 +56,7 @@ def downloadFiles(fileList,requestSession,partialDownloadAllowed):
 
 
 def main():
-    configuration=Configuration(os.getcwd()+"/downloadConfiguration.txt","=")
+    configuration=Configuration(os.getcwd()+"/configurations/downloadConfiguration.txt","=")
 
     objectTypeFilePath=os.getcwd()+configuration.getConfigurationValue("objectTypeFilePath","raw")
     outputFileLocation=os.getcwd()+configuration.getConfigurationValue("outputFileLocation","raw")
