@@ -56,10 +56,16 @@ def createParametricBCNN(dropoutFraction,convolutionLayersPerBlock,extraFirstBlo
             currentFilterCount*=filterCountBlockMultiplicativeFactor
             currentKernalSize*=kernalSizeBlockMultiplicitiveFactor    
     
-    
-    #Initally creates the model on a CPU instead of a GPU.        
-    with tf.device("/cpu:0"):
-        model=Model(inputs=mainInput,outputs=outputs)   
+
+    if(gpuQuantity>=2):
+        #Initally creates the model on a CPU instead of a GPU.        
+        with tf.device("/cpu:0"):
+            model=Model(inputs=mainInput,outputs=outputs)   
         
-    gpuModel=multi_gpu_model(model,gpus=gpuQuantity)
-    return model,gpuModel
+        gpuModel=multi_gpu_model(model,gpus=gpuQuantity)
+        return model,gpuModel
+    
+    else:
+        model=Model(inputs=mainInput,outputs=outputs)   
+        return model,model
+        
