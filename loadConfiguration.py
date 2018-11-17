@@ -16,14 +16,19 @@ class Configuration:
     def getConfigurationValue(self,configurationKey,outputType):
         rawValue=self.__configurationDictionary[configurationKey]
         
+        #Casts either every element of rawValue individually if it is a tuple of values or just the rawValue otherwise.
+        rawValueCaster=lambda castTypeFunction:[castTypeFunction(i) for i in rawValue] if(type(rawValue)==tuple) else castTypeFunction(rawValue)
+        
+        boolCaster=lambda inputValue:inputValue=="yes"
+        
         if(outputType=="raw"):
             return rawValue #No casting is done on the output
         elif(outputType=="bool"):
-            return bool(rawValue=="yes")
+            return rawValueCaster(boolCaster)
         elif(outputType=="int"):
-            return int(rawValue)
+            return rawValueCaster(int)
         elif(outputType=="float"):
-            return float(rawValue)
+            return rawValueCaster(float)
         
         raise Exception("Invalid desired outputType "+outputType+" for getConfigurationValue")
     
@@ -31,7 +36,6 @@ class Configuration:
     def getAllConfigurations(self):
         return self.__configurationDictionary.items()
           
-
     #Loads all the entries from a configuration file
     def __loadConfiguration(self):
         configurationFile=open(self.__filePath,"r")
@@ -49,7 +53,7 @@ class Configuration:
                 currentValue=currentLine[1] #For a single value to a key.
             else:
                 currentValue=tuple(currentLine[1:]) #For multiple values for a key.        
-       
+
             if(currentKey in self.__configurationDictionary):
                 if(type(self.__configurationDictionary[currentKey])!=list):
                     self.__configurationDictionary[currentKey]=[self.__configurationDictionary[currentKey]] #Transforms the value into list form.
