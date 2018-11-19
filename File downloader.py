@@ -1,5 +1,4 @@
 import os
-import csv
 import requests
 from joblib import Parallel
 from joblib import delayed
@@ -44,7 +43,7 @@ def downloadFiles(fileList,requestSession,partialDownloadAllowed):
     
     #Done to see initally if all of the files exist.    
     if(not partialDownloadAllowed):
-        headResponses=Parallel(n_jobs=numberOfFiles,prefer="threads")(delayed(headResponse)(i,requestSession) for i in fileURLs)
+        headResponses=Parallel(n_jobs=numberOfFiles,prefer="threads")(delayed(okHeadResponse)(i,requestSession) for i in fileURLs)
         
         if(False in headResponses):  #If not all the files can be downloaded
             return None
