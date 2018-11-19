@@ -1,0 +1,9 @@
+minimumDropoutFraction=0.1
+maximumDropoutFraction=0.9
+possibleConvolutionLayersPerBlock=1=2=3=4
+possibleInitalLayerFilterCount=8=16=32
+possibleFilterCountBlockMultiplicativeFactor=1.0=1.5=2.0
+possibleInitalLayerKernalSize=5=7=9=11
+possibleKernalSizeBlockMultiplicitiveFactor=1.0=0.9=0.75=0.5
+minimumLearningRate=0.0001
+maximumLearningRate=0.002
