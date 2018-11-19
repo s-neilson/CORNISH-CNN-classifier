@@ -11,10 +11,9 @@ from keras.engine.input_layer import Input
 
 
 #Creates a BCNN based upon various comfiguration variables
-def createParametricBCNN(dropoutFraction,convolutionLayersPerBlock,extraFirstBlock,initalLayerFilterCount,
-                         filterCountBlockMultiplicativeFactor,initalLayerKernalSize,kernalSizeBlockMultiplicitiveFactor,
-                         inputShape,outputLayerNames,objectTypePossibleLabelSets,gpuQuantity):
-    
+def createParametricBCNN(optimisingParameters,inputShape,outputLayerNames,objectTypePossibleLabelSets,gpuQuantity): 
+    dropoutFraction,convolutionLayersPerBlock,extraFirstBlock,initalLayerFilterCount,filterCountBlockMultiplicativeFactor,initalLayerKernalSize,kernalSizeBlockMultiplicitiveFactor,learningRate=optimisingParameters
+
     #extraFirstBlock: Whether an extra block is to be included before the first output.
     #filterCountBlockMultiplicativeFactor: The amount of filters the convolution layers in a block have compared to the previous block.
     #kernalSizeBlockMultiplicitiveFactor: #The kernal size for convolutional layers in a block compared to the previous block.
