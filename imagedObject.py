@@ -1,15 +1,13 @@
+import copy
+import os
 from astropy.io import fits
 from astropy import wcs
 from astropy.visualization import MinMaxInterval
 import numpy
 import keras_preprocessing
-from matplotlib import pyplot as plt
-
-import math
-import copy
-import os
 
 import fitsFileFunctions
+
 
 
 
@@ -21,20 +19,6 @@ class ImagedObject:
     imageData=None #All of the data from the fits files in a 3d numpy array.   
     nonBlankImageCount=0
     
-    
-    def plotImages(self,figureSize,textSize):
-        plt.figure(figsize=figureSize)
-        plt.suptitle(self.name+", "+str(self.label))
-        numberOfImages=self.imageData.shape[2]
-        subplotDivision=math.ceil(math.sqrt(numberOfImages)) #Done so the images are arranged in a shape as close to a square as possible.
-        
-        for i in range(0,numberOfImages):
-            locationString=str(subplotDivision)+str(subplotDivision)+str(i+1)
-            plt.subplot(locationString)
-            plt.imshow(self.imageData[:,:,i],cmap="hot")
-            
-        plt.show()
-
         
 #Class for creating an ImagedObject from a set of file paths.   
 class FileImagedObject(ImagedObject):        
@@ -203,5 +187,4 @@ class TransformedImagedObject(ImagedObject):
         
         self.imageData=numpy.add(self.imageData,imageBackgrounds) #The backgrounds are added to the images again.
         
-        
-        
+               
