@@ -17,7 +17,6 @@ def createAccuracyPlots(history,outputNames,fileNamePrefix):
         plt.ylabel("Accuracy fraction")
         plt.legend()
         
-        figure.show()
         figure.savefig(fileNamePrefix+"AccuracyPlot_"+currentName+".png")
          
 
@@ -69,7 +68,7 @@ def createConfusionMatricies(model,testObjects,testObjectImageList,imageSaveFile
                 currentConfusionMatrixFraction[trueLabelIndex][predictedLabelIndex]=float(currentConfusionMatrix[trueLabelIndex][predictedLabelIndex])/float(trueLabelCount[trueLabelIndex])
                  
         
-        #Below plots the confusion matricies.  
+        #Below creates plots for the confusion matricies.  
         currentAxes=figure.add_subplot(subplotDivision,subplotDivision,i+1) 
         plt.matshow(currentConfusionMatrixFraction,cmap="spring",fignum=False,vmin=0.0,vmax=1.0)         
         
@@ -88,5 +87,4 @@ def createConfusionMatricies(model,testObjects,testObjectImageList,imageSaveFile
                 matrixElementLabelString=matrixElementLabelPercentage+"\n"+str(currentConfusionMatrix[trueLabelIndex][predictedLabelIndex])
                 currentAxes.text(predictedLabelIndex,trueLabelIndex,matrixElementLabelString,horizontalalignment="center",verticalalignment="center",color="k") #A numerical label for each extry in the confusion matrix is created.
         
-    figure.show()
     figure.savefig(imageSaveFilePath)
