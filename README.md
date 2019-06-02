@@ -2,7 +2,7 @@
 A convolutional neural network for the classification of astronomical obejcts using data that is part of the CORNISH (Co-Ordinated Radio 'N' Infrared Survey for High-mass star formation) project (website: http://cornish.leeds.ac.uk/public/index.php).
 
 ## List of programs included
-* FileDownloader.py: Downloads CORNISH .fits files from the CORNISH catalog (avaliable at http://cornish.leeds.ac.uk/public/catalogue.php).
+* fileDownloader.py: Downloads CORNISH .fits files from the CORNISH catalog (avaliable at http://cornish.leeds.ac.uk/public/catalogue.php).
 * CORNISH_B-CNN_Trainer_And_Optimiser.py: Either optimises the hyperparameters of a B-CNN or trains a single B-CNN according to specified hyperparameters.
 * B-CNN_Object_Classifier.py: Classifies a single object given the a model and the .fits files that make up the object. Also generates a location heatmap for the classified object.
                                                                                                                                           
