@@ -1,12 +1,10 @@
 import copy
 import os
 from astropy.io import fits
-from astropy import wcs
 from astropy.visualization import MinMaxInterval
+from scipy.misc import imresize
 import numpy
 import keras_preprocessing
-
-import fitsFileFunctions
 
 
 
@@ -22,7 +20,7 @@ class ImagedObject:
         
 #Class for creating an ImagedObject from a set of file paths.   
 class FileImagedObject(ImagedObject):        
-    def __init__(self,filePaths,name,label,imageSize,imageFov,rejectionThresholdArea):
+    def __init__(self,filePaths,name,label,imageSize,rejectionThresholdArea):
         self.name=name
         self.label=label
         self.imageSize=imageSize
@@ -34,31 +32,31 @@ class FileImagedObject(ImagedObject):
                
         
         for currentIndex,currentFilePath in enumerate(filePaths):
-            self.__loadFitsFile(currentIndex,currentFilePath,imageSize,imageFov,rejectionThresholdArea)  
+            self.__loadFitsFile(currentIndex,currentFilePath,imageSize,rejectionThresholdArea)  
             
-            
-    def __loadFitsFile(self,imageDataIndex,filePath,imageSize,imageFov,rejectionThresholdArea):
+        
+    def __loadFitsFile(self,imageDataIndex,filePath,imageSize,rejectionThresholdArea):
         if(filePath!=""): #If the file corresponding to currentIndex was found in the folder.                 
             newHDU=fits.open(filePath)[0]
             newImageData=newHDU.data
-            newWCS=wcs.WCS(newHDU.header)
-            newWCS=fitsFileFunctions.wcsRemoveNonImageAxes(newWCS)
-
+            
             if(newImageData.shape[0]!=newImageData.shape[1]):
                 return #The image is not square in shape and is therefore rejected.
                 
             if(not self.__imageFromEdgeOfSurvey(newImageData,rejectionThresholdArea)):
-                newImageData=fitsFileFunctions.imageMatchFovAndSize(newImageData,newWCS,imageSize,imageFov)
+                resizedImageData=imresize(newImageData,(imageSize,imageSize),mode="F") #The 
                 self.nonBlankImageCount+=1
                 
                 normalizerInterval=MinMaxInterval()
-                normalizedNewImageData=normalizerInterval(newImageData)#The pixel values in the curent image are normalized.
-
+                normalizedNewImageData=normalizerInterval(resizedImageData)#The pixel values in the curent image are normalized.
                 self.imageData[:,:,imageDataIndex]=normalizedNewImageData #The image has been successfully loaded.
      
     #Uses a modified version of the flood fill algorithm (used for changing the colour of areas in art software) in order to detect large regions that have the same pixel value that originate
     # from the edge; regions that may indicate that the image comes from the edge of an astronomical survey, meaning it should be rejected.
     def __imageFromEdgeOfSurvey(self,image,rejectionThresholdArea):
+        if(rejectionThresholdArea is None):
+            return False #The imageFro,EdgeOfSurvey check has been disabled.
+        
         edgePixels=() #A tuple that holds the coordinates for parts of the image at the edge. Areas from the edge of a survey will have large sections all with the same pixel value, and they always begin at the edge.
 
         for i in range(0,image.shape[0]):
@@ -114,14 +112,14 @@ class FileImagedObject(ImagedObject):
 
 #Class for creating an ImagedObject from .fits files in a folder.
 class FolderImagedObject(FileImagedObject):    
-    def __init__(self,folderPath,name,label,imageSize,imageFov,rejectionThresholdArea,fileSuffixes):
+    def __init__(self,folderPath,name,label,imageSize,rejectionThresholdArea,fileSuffixes):
         self.name=name
         self.label=label
         self.imageSize=imageSize
         
         currentFolderContents=os.listdir(folderPath)
         filesToLoad=self.__getFilesToLoad(folderPath,currentFolderContents,fileSuffixes)
-        super().__init__(filesToLoad,name,label,imageSize,imageFov,rejectionThresholdArea) #Uses FileImagedObject to create the object from the file list.        
+        super().__init__(filesToLoad,name,label,imageSize,rejectionThresholdArea) #Uses FileImagedObject to create the object from the file list.        
 
 
     #Returns a list of the filenames of .fits files to be loaded for each corresponding image that is to be in the imageData array.

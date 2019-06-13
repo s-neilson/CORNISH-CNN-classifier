@@ -85,8 +85,8 @@ def main():
     allowedFileSuffixes=inputConfiguration.getConfigurationValue("useFileSuffix","raw")
     channelsPerImagedObject=1 if(type(allowedFileSuffixes)==str) else len(allowedFileSuffixes)
     desiredImageSize=inputConfiguration.getConfigurationValue("desiredImageSize","int")
-    desiredImageFov=inputConfiguration.getConfigurationValue("desiredImageFov","float")
-    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int")
+    contigiousEqualAreaRejectionCheck=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionCheck","bool")
+    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int") if(contigiousEqualAreaRejectionCheck) else None
     objectTypeLabels=inputConfiguration.getConfigurationValue("allowedObjectType","raw")
     
     #A map between object types and their corresponding label lists is created.
@@ -104,8 +104,7 @@ def main():
      
     print(" Number of channels for input objects: "+str(channelsPerImagedObject))    
     print(" Image size: "+str(desiredImageSize)+" pixels")
-    print(" Image field of view: "+str(desiredImageFov))
-    print(" Contgious colour area rejection threshold: "+str(contigiousEqualAreaRejectionThreshold))
+    print(" Contigious colour area rejection threshold: "+(str(contigiousEqualAreaRejectionThreshold) if(contigiousEqualAreaRejectionCheck) else "Disabled"))
     
     print(" Labels at each level in the object type heirarchy:")
     for i in range(0,objectHierarchyDepth):
@@ -136,7 +135,7 @@ def main():
     
     
     
-    loadedImagedObject=FileImagedObject(imageFilePaths," ",None,desiredImageSize,desiredImageFov,contigiousEqualAreaRejectionThreshold)
+    loadedImagedObject=FileImagedObject(imageFilePaths," ",None,desiredImageSize,contigiousEqualAreaRejectionThreshold)
     
     if(loadedImagedObject.nonBlankImageCount==0): #If no images in loadedImagedObject are usable the program will exit when the user is ready.
         print("None of the loaded images are usable due to the following reasons that may not be limited to only one: ")

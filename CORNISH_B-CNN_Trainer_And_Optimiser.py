@@ -28,9 +28,9 @@ def main():
     allowedFileSuffixes=inputConfiguration.getConfigurationValue("useFileSuffix","raw")
     allowedFileSuffixes=[allowedFileSuffixes] if(type(allowedFileSuffixes)==str) else allowedFileSuffixes
     desiredImageSize=inputConfiguration.getConfigurationValue("desiredImageSize","int")
-    desiredImageFov=inputConfiguration.getConfigurationValue("desiredImageFov","float")
     dataFolder=os.getcwd()+inputConfiguration.getConfigurationValue("dataFolder","raw")
-    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int")
+    contigiousEqualAreaRejectionCheck=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionCheck","bool")
+    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int") if(contigiousEqualAreaRejectionCheck) else None
     objectLeafLabelTotalQuantity=inputConfiguration.getConfigurationValue("objectLeafLabelTotalQuantity","int")
     transformedObjectImageRemovalChance=inputConfiguration.getConfigurationValue("transformedObjectImageRemovalChance","float")
     objectTypeLabels=inputConfiguration.getConfigurationValue("allowedObjectType","raw")
@@ -50,9 +50,8 @@ def main():
         print("  "+currentSuffix)
         
     print(" Image size: "+str(desiredImageSize)+" pixels")
-    print(" Image field of view: "+str(desiredImageFov))
     print(" Main image folder: "+dataFolder)
-    print(" Contgious colour area rejection threshold: "+str(contigiousEqualAreaRejectionThreshold))
+    print(" Contigious colour area rejection threshold: "+(str(contigiousEqualAreaRejectionThreshold) if(contigiousEqualAreaRejectionCheck) else "Disabled"))
     print(" Minimum objects per object category to load/create: "+str(objectLeafLabelTotalQuantity))
     print(" Chance of a individual image being removed from an augmented image: "+str(transformedObjectImageRemovalChance))
     
@@ -149,9 +148,8 @@ def main():
     
     
     
-    trainObjects,validationObjects=createImagedObjects(dataFolder,objectTypeLabelDictionary,desiredImageSize,desiredImageFov,
-                                                       contigiousEqualAreaRejectionThreshold,allowedFileSuffixes,validationFraction,  
-                                                       objectLeafLabelTotalQuantity,transformedObjectImageRemovalChance)
+    trainObjects,validationObjects=createImagedObjects(dataFolder,objectTypeLabelDictionary,desiredImageSize,contigiousEqualAreaRejectionThreshold,
+                                                       allowedFileSuffixes,validationFraction,objectLeafLabelTotalQuantity,transformedObjectImageRemovalChance)
     
     
     #Data from the loaded/created ImagedObjects is turned into a format that can be used in the neural network.

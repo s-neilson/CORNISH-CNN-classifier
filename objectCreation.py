@@ -9,7 +9,7 @@ from imagedObject import FolderImagedObject,TransformedImagedObject
 
 
 
-def loadImagedObjects(mainObjectFolder,objectTypeLabelDictionary,imageSize,imageFov,rejectionThresholdArea,fileSuffixes):
+def loadImagedObjects(mainObjectFolder,objectTypeLabelDictionary,imageSize,rejectionThresholdArea,fileSuffixes):
     loadedObjects={currentLabels[-1]:[] for currentLabels in objectTypeLabelDictionary.values()} #Holds the loaded objects associated with the last component of their label set (their leaf label).
     objectsToLoadData=[] #Holds dictionaries that contain information about the objects to be loaded
     
@@ -33,7 +33,7 @@ def loadImagedObjects(mainObjectFolder,objectTypeLabelDictionary,imageSize,image
         newPath=currentObjectImportData["folder"]
         newName=currentObjectImportData["name"]
         newLabel=currentObjectImportData["label"]
-        newObject=FolderImagedObject(newPath,newName,newLabel,imageSize,imageFov,rejectionThresholdArea,fileSuffixes)
+        newObject=FolderImagedObject(newPath,newName,newLabel,imageSize,rejectionThresholdArea,fileSuffixes)
         
         if(newObject.nonBlankImageCount>0): #If at least one image was succesfully loaded for the object.
             leafLabel=newLabel[-1] #The final label for the object.
@@ -70,8 +70,8 @@ def createTransformedImagedObjectsForObjectType(objectList,objectLeafLabel,objec
 
 
 
-def createImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,imageFov,rejectionThresholdArea,fileSuffixes,validationFraction,objectLeafLabelQuantityLimit,transformedObjectImageRemovalChance): 
-    loadedObjects=loadImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,imageFov,rejectionThresholdArea,fileSuffixes)
+def createImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,rejectionThresholdArea,fileSuffixes,validationFraction,objectLeafLabelQuantityLimit,transformedObjectImageRemovalChance): 
+    loadedObjects=loadImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,rejectionThresholdArea,fileSuffixes)
     loadedTrainObjects={currentLeafLabel:[] for currentLeafLabel in loadedObjects.keys()} #Holds the loaded training objects associated with each type leaf label.
     validationObjects=[]
     
