@@ -99,4 +99,16 @@ def createImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,rej
     
     
     return trainObjects,validationObjects
+
+
+
+#Similar to createImagedObjects, but does no training or validaiton splitting and creates no extra transformed objects.
+def createImagedObjectsFromFolderOnly(importFolderPath,objectTypeLabelDictionary,imageSize,rejectionThresholdArea,fileSuffixes):
+    loadedObjects=loadImagedObjects(importFolderPath,objectTypeLabelDictionary,imageSize,rejectionThresholdArea,fileSuffixes)
+    outputObjects=[] #Holds the list of all ImagedObjects.
+    
+    for currentObjectLeafLabel,currentObjectList in loadedObjects.items(): #Loops through all leaf object types
+        outputObjects+=currentObjectList #The object list for the current leaf object type is added to the outputObjects list.
+        
+    return outputObjects
     
