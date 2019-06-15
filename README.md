@@ -4,7 +4,8 @@ A convolutional neural network for the classification of astronomical obejcts us
 ## List of programs included
 * fileDownloader.py: Downloads CORNISH .fits files from the CORNISH catalog (avaliable at http://cornish.leeds.ac.uk/public/catalogue.php).
 * CORNISH_B-CNN_Trainer_And_Optimiser.py: Either optimises the hyperparameters of a B-CNN or trains a single B-CNN according to specified hyperparameters.
-* B-CNN_Object_Classifier.py: Classifies a single object given the a model and the .fits files that make up the object. Also generates a location heatmap for the classified object.
+* bcnnSingleObjectClassifier.py: Classifies a single object given the a model and the .fits files that make up the object. Also generates a location heatmap for the classified object.
+* bcnnMultipleObjectClassifier.py: Classifies multiple objects given a model, a data folder and information regarding the structure of .fits files in the data folder. Outputs a confusion matrix for the tested obejcts and the model's F1 score on the data.
                                                                                                                                           
 ## Configuration files
 
@@ -13,6 +14,7 @@ All file paths are relative to the location of the file downloader. Configuratio
 * downloadConfiguration.txt: Configuration for file downloader
 * inputConfiguration.txt: Configuration for data preproprocesing when training a model/optimising hyperparameters.
 * trainingConfiguration.txt: Configuration for the training of a model (or models when optimising hyperparameters).
+* testingConfiguration.txt: Configuration for the multiple object testing of a model.
 * hyperparameterLimitsConfiguration: Configuration containing the ranges in which hyperparameters can be optimised. The hyperparameter _extraFirstBlock_ always has the range of true and false.
 
 
@@ -43,6 +45,17 @@ An example of a file URL to download with a fileSourceURLPrefix of http://cornis
 |useFileSuffix|No|Yes|Specifies a file suffix (file name without the object name component) for images that can be used in training.|String|
 |allowedObjectType|Yes|Yes|Ther first value specifies the object type based on object type folders that are created using the file downloader, while the remaining values specify in order the label hierarchy for this object type.|String|
 
+### Testing input configuration (testingConfiguration.txt)
+
+|Name|Can have multiple values|Can occur multiple times|Description|Data type|
+|----|------------------------|------------------------|-----------|---------|
+|modelFileName|No|No|The file path of the saved model to test relative to the multiple objects classifier .py file that is being run.|String|
+|desiredImageSize|No|No|Square edge size in pixels that input images should be scaled to.|Integer|
+|contigiousEqualAreaRejectionCheck|No|No|Whether the check associated with contigiousEqualAreaRejectionThreshold will occur (yes) or not (otherwise).|Boolean|
+|contigiousEqualAreaRejectionThreshold|No|No|Images that have a contigious area of the same pixel value connected to the image edge will be rejected if the areforementioned area equals or exceeds this value. This is done to remove images that may come from the edge of an astronomical survey; such images may cause problems with training.|Integer|
+|dataFolder|No|No|Path to folder containing the object type subfolders.|String|
+|useFileSuffix|No|Yes|Specifies a file suffix (file name without the object name component) for images that can be used in training.|String|
+|allowedObjectType|Yes|Yes|Ther first value specifies the object type based on object type folders that are created using the file downloader, while the remaining values specify in order the label hierarchy for this object type.|String|
 
 ### Training process configuration (trainingConfiguration.txt)
 
