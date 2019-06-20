@@ -14,7 +14,11 @@ class Configuration:
     
     #Gets a loaded configuration value from the configuration dictionary and casts it if necessary. 
     def getConfigurationValue(self,configurationKey,outputType):
-        rawValue=self.__configurationDictionary[configurationKey]
+        rawValue=None
+        if(configurationKey in self.__configurationDictionary):
+            rawValue=self.__configurationDictionary[configurationKey]
+        else:
+            return None #The configuration key is not in the configuration dictionary.
         
         #Casts either every element of rawValue individually if it is a tuple of values or just the rawValue otherwise.
         rawValueCaster=lambda castTypeFunction:[castTypeFunction(i) for i in rawValue] if(type(rawValue)==tuple) else castTypeFunction(rawValue)

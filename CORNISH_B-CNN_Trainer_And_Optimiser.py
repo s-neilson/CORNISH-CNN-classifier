@@ -25,12 +25,12 @@ def main():
     inputConfiguration=Configuration(os.getcwd()+"/configurations/inputConfiguration.txt","=")
     
     trainSingleModel=inputConfiguration.getConfigurationValue("trainSingleModel","bool")
+    filePrefix=inputConfiguration.getConfigurationValue("filePrefix","raw")
     allowedFileSuffixes=inputConfiguration.getConfigurationValue("useFileSuffix","raw")
     allowedFileSuffixes=[allowedFileSuffixes] if(type(allowedFileSuffixes)==str) else allowedFileSuffixes
     desiredImageSize=inputConfiguration.getConfigurationValue("desiredImageSize","int")
     dataFolder=os.getcwd()+inputConfiguration.getConfigurationValue("dataFolder","raw")
-    contigiousEqualAreaRejectionCheck=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionCheck","bool")
-    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int") if(contigiousEqualAreaRejectionCheck) else None
+    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int")
     objectLeafLabelTotalQuantity=inputConfiguration.getConfigurationValue("objectLeafLabelTotalQuantity","int")
     transformedObjectImageRemovalChance=inputConfiguration.getConfigurationValue("transformedObjectImageRemovalChance","float")
     objectTypeLabels=inputConfiguration.getConfigurationValue("allowedObjectType","raw")
@@ -51,7 +51,7 @@ def main():
         
     print(" Image size: "+str(desiredImageSize)+" pixels")
     print(" Main image folder: "+dataFolder)
-    print(" Contigious colour area rejection threshold: "+(str(contigiousEqualAreaRejectionThreshold) if(contigiousEqualAreaRejectionCheck) else "Disabled"))
+    print(" Contigious colour area rejection threshold: "+("Disabled" if(contigiousEqualAreaRejectionThreshold is None) else str(contigiousEqualAreaRejectionThreshold)))
     print(" Minimum objects per object category to load/create: "+str(objectLeafLabelTotalQuantity))
     print(" Chance of a individual image being removed from an augmented image: "+str(transformedObjectImageRemovalChance))
     
@@ -149,7 +149,7 @@ def main():
     
     
     trainObjects,validationObjects=createImagedObjects(dataFolder,objectTypeLabelDictionary,desiredImageSize,contigiousEqualAreaRejectionThreshold,
-                                                       allowedFileSuffixes,validationFraction,objectLeafLabelTotalQuantity,transformedObjectImageRemovalChance)
+                                                       filePrefix,allowedFileSuffixes,validationFraction,objectLeafLabelTotalQuantity,transformedObjectImageRemovalChance)
     
     
     #Data from the loaded/created ImagedObjects is turned into a format that can be used in the neural network.

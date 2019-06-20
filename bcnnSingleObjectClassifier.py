@@ -85,8 +85,7 @@ def main():
     allowedFileSuffixes=inputConfiguration.getConfigurationValue("useFileSuffix","raw")
     channelsPerImagedObject=1 if(type(allowedFileSuffixes)==str) else len(allowedFileSuffixes)
     desiredImageSize=inputConfiguration.getConfigurationValue("desiredImageSize","int")
-    contigiousEqualAreaRejectionCheck=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionCheck","bool")
-    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int") if(contigiousEqualAreaRejectionCheck) else None
+    contigiousEqualAreaRejectionThreshold=inputConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int")
     objectTypeLabels=inputConfiguration.getConfigurationValue("allowedObjectType","raw")
     
     #A map between object types and their corresponding label lists is created.
@@ -104,7 +103,7 @@ def main():
      
     print(" Number of channels for input objects: "+str(channelsPerImagedObject))    
     print(" Image size: "+str(desiredImageSize)+" pixels")
-    print(" Contigious colour area rejection threshold: "+(str(contigiousEqualAreaRejectionThreshold) if(contigiousEqualAreaRejectionCheck) else "Disabled"))
+    print(" Contigious colour area rejection threshold: "+("Disabled" if(contigiousEqualAreaRejectionThreshold is None) else str(contigiousEqualAreaRejectionThreshold)))
     
     print(" Labels at each level in the object type heirarchy:")
     for i in range(0,objectHierarchyDepth):

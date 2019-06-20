@@ -18,12 +18,12 @@ def main():
     testingConfiguration=Configuration(os.getcwd()+"/configurations/testingConfiguration.txt","=")
     
     modelFileName=testingConfiguration.getConfigurationValue("modelFileName","raw")
+    filePrefix=inputConfiguration.getConfigurationValue("filePrefix","raw")
     allowedFileSuffixes=testingConfiguration.getConfigurationValue("useFileSuffix","raw")
     allowedFileSuffixes=[allowedFileSuffixes] if(type(allowedFileSuffixes)==str) else allowedFileSuffixes
     desiredImageSize=testingConfiguration.getConfigurationValue("desiredImageSize","int")
     dataFolder=os.getcwd()+testingConfiguration.getConfigurationValue("dataFolder","raw")
-    contigiousEqualAreaRejectionCheck=testingConfiguration.getConfigurationValue("contigiousEqualAreaRejectionCheck","bool")
-    contigiousEqualAreaRejectionThreshold=testingConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int") if(contigiousEqualAreaRejectionCheck) else None
+    contigiousEqualAreaRejectionThreshold=testingConfiguration.getConfigurationValue("contigiousEqualAreaRejectionThreshold","int")
     objectTypeLabels=testingConfiguration.getConfigurationValue("allowedObjectType","raw")
     
     #A map between object types and their corresponding label lists is created.
@@ -44,7 +44,7 @@ def main():
         
     print(" Image size: "+str(desiredImageSize)+" pixels")
     print(" Main image folder: "+dataFolder)
-    print(" Contigious colour area rejection threshold: "+(str(contigiousEqualAreaRejectionThreshold) if(contigiousEqualAreaRejectionCheck) else "Disabled"))
+    print(" Contigious colour area rejection threshold: "+("Disabled" if(contigiousEqualAreaRejectionThreshold is None) else str(contigiousEqualAreaRejectionThreshold)))
 
     
     print(" Labels at each level in the object type heirarchy:")
@@ -58,7 +58,7 @@ def main():
 
 
     #The validation obejcts are loaded from the data folder.   
-    validationObjects=createImagedObjectsFromFolderOnly(dataFolder,objectTypeLabelDictionary,desiredImageSize,contigiousEqualAreaRejectionThreshold,allowedFileSuffixes)
+    validationObjects=createImagedObjectsFromFolderOnly(dataFolder,objectTypeLabelDictionary,desiredImageSize,contigiousEqualAreaRejectionThreshold,filePrefix,allowedFileSuffixes)
     
     
     #Data from the loaded ImagedObjects is turned into a format that can be used in the neural network.

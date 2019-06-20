@@ -112,18 +112,18 @@ class FileImagedObject(ImagedObject):
 
 #Class for creating an ImagedObject from .fits files in a folder.
 class FolderImagedObject(FileImagedObject):    
-    def __init__(self,folderPath,name,label,imageSize,rejectionThresholdArea,fileSuffixes):
+    def __init__(self,folderPath,name,label,imageSize,rejectionThresholdArea,filePrefix,fileSuffixes):
         self.name=name
         self.label=label
         self.imageSize=imageSize
         
         currentFolderContents=os.listdir(folderPath)
-        filesToLoad=self.__getFilesToLoad(folderPath,currentFolderContents,fileSuffixes)
+        filesToLoad=self.__getFilesToLoad(folderPath,currentFolderContents,filePrefix,fileSuffixes)
         super().__init__(filesToLoad,name,label,imageSize,rejectionThresholdArea) #Uses FileImagedObject to create the object from the file list.        
 
 
     #Returns a list of the filenames of .fits files to be loaded for each corresponding image that is to be in the imageData array.
-    def __getFilesToLoad(self,folderPath,currentFolderContents,fileSuffixes):        
+    def __getFilesToLoad(self,folderPath,currentFolderContents,filePrefix,fileSuffixes):        
         filesToLoad=[""]*len(fileSuffixes) #.fits files that are missing will cause their corresponding entry to remain blank.
         
         for currentContentName in currentFolderContents:
@@ -132,8 +132,14 @@ class FolderImagedObject(FileImagedObject):
             if((os.path.isfile(currentContentPath)) and (os.path.splitext(currentContentPath)[1]==".fits")): #Locates all .fits files in the folder.
                 currentFileName=os.path.split(currentContentPath)[1]
                 
-                possibleImageNames=[self.name+currentSuffix for currentSuffix in fileSuffixes]
+                possibleImageNames=None
+                if(filePrefix is None):
+                    possibleImageNames=[self.name+currentSuffix for currentSuffix in fileSuffixes] #Files are named by the object name along with a suffix.
+                else:
+                    possibleImageNames=[filePrefix+currentSuffix for currentSuffix in fileSuffixes] #Files are names by the file prefix along with a suffix.
+                    
                 currentImageIndex=0
+                
                 
                 try:
                     currentImageIndex=possibleImageNames.index(currentFileName) #Gets the location in the imageData array that the data from the current .fits file should occupy
