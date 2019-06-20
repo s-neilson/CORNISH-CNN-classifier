@@ -37,11 +37,11 @@ An example of a file URL to download with a fileSourceURLPrefix of http://cornis
 |----|------------------------|------------------------|-----------|---------|
 |trainSingleModel|No|No|Whether a single model should be trained (yes) or hyperparameters optimised (otherwise).|Boolean|
 |desiredImageSize|No|No|Square edge size in pixels that input images should be scaled to.|Integer|
-|contigiousEqualAreaRejectionCheck|No|No|Whether the check associated with contigiousEqualAreaRejectionThreshold will occur (yes) or not (otherwise).|Boolean|
 |contigiousEqualAreaRejectionThreshold|No|No|Images that have a contigious area of the same pixel value connected to the image edge will be rejected if the areforementioned area equals or exceeds this value. This is done to remove images that may come from the edge of an astronomical survey; such images may cause problems with training.|Integer|
 |objectLeafLabelTotalQuantity|No|No|The maximum amount of imaged objects that will exist for each object type. If the amount of loaded objects of a particular object type does not reach this limit, extra objects will be created from the loaded ones using the technique of data augmentation. No new objects will be created if the amount of loaded objects for a particular object type equals or exceeds this limit.|Integer|
 |transformedObjectImageRemovalChance|No|No|Chance of an individual image of an augmented (or transformed) object to be replaced with a blank image. This is done so the classifier is forced not to rely on the presence of certain image channels.|Float|
 |dataFolder|No|No|Path to folder containing the object type subfolders.|String|
+|filePrefix|No|No|Specifies a file prefix for images that can be used in training. Without this, the name of the object will be used|String|
 |useFileSuffix|No|Yes|Specifies a file suffix (file name without the object name component) for images that can be used in training.|String|
 |allowedObjectType|Yes|Yes|Ther first value specifies the object type based on object type folders that are created using the file downloader, while the remaining values specify in order the label hierarchy for this object type.|String|
 
@@ -51,9 +51,9 @@ An example of a file URL to download with a fileSourceURLPrefix of http://cornis
 |----|------------------------|------------------------|-----------|---------|
 |modelFileName|No|No|The file path of the saved model to test relative to the multiple objects classifier .py file that is being run.|String|
 |desiredImageSize|No|No|Square edge size in pixels that input images should be scaled to.|Integer|
-|contigiousEqualAreaRejectionCheck|No|No|Whether the check associated with contigiousEqualAreaRejectionThreshold will occur (yes) or not (otherwise).|Boolean|
 |contigiousEqualAreaRejectionThreshold|No|No|Images that have a contigious area of the same pixel value connected to the image edge will be rejected if the areforementioned area equals or exceeds this value. This is done to remove images that may come from the edge of an astronomical survey; such images may cause problems with training.|Integer|
 |dataFolder|No|No|Path to folder containing the object type subfolders.|String|
+|filePrefix|No|No|Specifies a file prefix for images that can be used in training. Without this, the name of the object will be used|String|
 |useFileSuffix|No|Yes|Specifies a file suffix (file name without the object name component) for images that can be used in training.|String|
 |allowedObjectType|Yes|Yes|Ther first value specifies the object type based on object type folders that are created using the file downloader, while the remaining values specify in order the label hierarchy for this object type.|String|
 
