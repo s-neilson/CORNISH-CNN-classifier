@@ -18,7 +18,7 @@ def main():
     testingConfiguration=Configuration(os.getcwd()+"/configurations/testingConfiguration.txt","=")
     
     modelFileName=testingConfiguration.getConfigurationValue("modelFileName","raw")
-    filePrefix=inputConfiguration.getConfigurationValue("filePrefix","raw")
+    filePrefix=testingConfiguration.getConfigurationValue("filePrefix","raw")
     allowedFileSuffixes=testingConfiguration.getConfigurationValue("useFileSuffix","raw")
     allowedFileSuffixes=[allowedFileSuffixes] if(type(allowedFileSuffixes)==str) else allowedFileSuffixes
     desiredImageSize=testingConfiguration.getConfigurationValue("desiredImageSize","int")
